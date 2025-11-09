@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="text-center py-5">
+    <h1 class="mb-3">Welcome to TaskManager</h1>
+    <p class="lead">Simple, fast and resume-ready task tracker.</p>
+    <a class="btn btn-primary" href="{{ url_for('register') }}">Get Started</a>
+  </div>
+{% endblock %}

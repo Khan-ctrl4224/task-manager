@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>{{ heading }}</h2>
+<form method="post" class="mt-3" novalidate>
+  {{ form.hidden_tag() }}
+  <div class="mb-3">{{ form.title.label }} {{ form.title(class_='form-control') }}</div>
+  <div class="mb-3">{{ form.description.label }} {{ form.description(class_='form-control', rows=4) }}</div>
+  <div class="row g-3">
+    <div class="col-md-4">{{ form.priority.label }} {{ form.priority(class_='form-select') }}</div>
+    <div class="col-md-4">{{ form.due_date.label }} {{ form.due_date(class_='form-control', placeholder='YYYY-MM-DD') }}</div>
+    <div class="col-md-4 d-flex align-items-end">{{ form.is_done() }} <label class="ms-2">Done</label></div>
+  </div>
+  <div class="mt-3">{{ form.submit(class_='btn btn-primary') }}</div>
+</form>
+{% endblock %}

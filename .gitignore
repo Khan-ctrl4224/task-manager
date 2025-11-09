@@ -1,0 +1,40 @@
+
+---
+
+# D) `.gitignore` — what it is & how to add it
+**What it is:** A list of files Git should **not** track (like your virtualenv, `__pycache__`, local DB, etc.).  
+**Where:** in your project root (`task-manager/`).
+
+**Steps**
+1. In **Explorer**, right-click **task-manager** → **New File**.  
+2. Name it exactly: `.gitignore` (starts with a dot, no extension).  
+3. Paste and **Save**:
+
+```gitignore
+# Virtual env
+.venv/
+env/
+venv/
+
+# Byte-compiled / cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Local database
+instance/
+*.db
+*.sqlite3
+
+# Environment files (keep example)
+.env
+!.env.example
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# OS junk
+.DS_Store
+Thumbs.db
