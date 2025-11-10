@@ -1,18 +1,23 @@
 # Task Manager (Flask + SQLite)
 
-A simple task tracker with user auth (register/login), CRUD tasks, search & filters (all/open/done/today), priorities and due dates.
+A simple, resume-ready task tracker with user authentication, priorities, due dates, and filters.
 
-## Tech
-- Python, Flask, Flask-Login, Flask-WTF
-- SQLAlchemy + SQLite
-- Bootstrap 5 (Jinja templates)
+## Stack
+- Flask, Flask-Login, Flask-WTF, SQLAlchemy
+- SQLite (local), Bootstrap
+- Python 3.x
 
-## Run locally
+## Features
+- Register / Login / Logout
+- Create, edit, delete tasks
+- Mark done / filter by Open, Done, Due Today
+- Search by title
+
+## Quick Start
 ```bash
 python -m venv .venv
 # Windows
-.venv\Scripts\activate
+.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 copy .env.example .env
-python app.py
-# visit http://127.0.0.1:5000
+python app.py  # http://127.0.0.1:5000

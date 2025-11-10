@@ -1,35 +1,37 @@
 
 ---
 
-# D) .gitignore — what it is, where to put it, and what to paste
-**What it is:** A list of files/folders Git should **not** track (your venv, local DB, caches, secrets, IDE settings).
+# D) `.gitignore` — what it is & how to add it
+**What it is:** A list of files/folders Git **must not** upload to GitHub (like your virtualenv, local DB, cache files, secrets).
 
-**Where:** In the project root (`task-manager/`).
+**Where to create:** Project root `task-manager/`.
 
-**How to add:**
-1. Explorer → right-click **task-manager** → **New File**.  
+**Steps**
+1. In **Explorer**, right-click **task-manager** → **New File**.  
 2. Name it **`.gitignore`** (starts with a dot, no extension).  
-3. Paste this and **Save**:
+3. Paste the content below and **Save**.
 
 ```gitignore
-# Python
+# Virtual env
+.venv/
+env/
+venv/
+
+# Python cache
 __pycache__/
 *.pyc
 
-# Virtual env
-.venv/
-
-# Local database
+# Local DB + instance
 instance/
-app.db
+*.db
 *.sqlite3
 
-# Env files
+# Secrets / env
 .env
 .env.* 
+!.env.example
 
-# VS Code / OS junk
+# Editors / OS junk
 .vscode/
-.code-workspace
 .DS_Store
 Thumbs.db
