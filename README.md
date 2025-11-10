@@ -21,3 +21,4 @@ python -m venv .venv
 pip install -r requirements.txt
 copy .env.example .env
 python app.py  # http://127.0.0.1:5000
+Fix deployment
