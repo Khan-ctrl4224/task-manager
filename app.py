@@ -67,28 +67,35 @@ def create_app():
         flash('Signed out successfully', 'info')
         return redirect(url_for('index'))
 
+    
     @app.route('/tasks')
     @login_required
     def tasks_list():
-        q = request.args.get('q')
-        show = request.args.get('show', 'all')  # all | open | done | today
+        from datetime import date
+    q = request.args.get('q')
+    show = request.args.get('show', 'all')  # all | open | done | today
+    page = request.args.get('page', 1, type=int)
+    per_page = 5  # you can tweak
 
-        tasks_query = Task.query.filter_by(user_id=current_user.id)
-        if q:
-            tasks_query = tasks_query.filter(Task.title.ilike(f"%{q}%"))
-        if show == 'open':
-            tasks_query = tasks_query.filter_by(is_done=False)
-        elif show == 'done':
-            tasks_query = tasks_query.filter_by(is_done=True)
-        elif show == 'today':
-            tasks_query = tasks_query.filter(Task.due_date == date.today())
+    tasks_query = Task.query.filter_by(user_id=current_user.id)
+    if q:
+        tasks_query = tasks_query.filter(Task.title.ilike(f"%{q}%"))
+    if show == 'open':
+        tasks_query = tasks_query.filter_by(is_done=False)
+    elif show == 'done':
+        tasks_query = tasks_query.filter_by(is_done=True)
+    elif show == 'today':
+        tasks_query = tasks_query.filter(Task.due_date == date.today())
 
-        tasks = tasks_query.order_by(
-            Task.is_done.asc(),
-            Task.due_date.asc().nulls_last(),
-            Task.created_at.desc()
-        ).all()
-        return render_template('tasks_list.html', tasks=tasks)
+    tasks_query = tasks_query.order_by(
+        Task.is_done.asc(),
+        Task.due_date.asc().nulls_last(),
+        Task.created_at.desc()
+    )
+
+    # NEW: paginate
+    tasks = tasks_query.paginate(page=page, per_page=per_page, error_out=False)
+    return render_template('tasks_list.html', tasks=tasks)
 
     @app.route('/tasks/new', methods=['GET', 'POST'])
     @login_required
@@ -145,3 +152,25 @@ def create_app():
 if __name__ == '__main__':
     app = create_app()
     app.run(debug=True)
+
+import csv
+from io import StringIO
+from flask import Response
+
+@app.route('/tasks/export.csv')
+@login_required
+def tasks_export_csv():
+    tasks = Task.query.filter_by(user_id=current_user.id).order_by(Task.created_at.desc()).all()
+
+    si = StringIO()
+    writer = csv.writer(si)
+    writer.writerow(["id", "title", "description", "priority", "due_date", "is_done", "created_at"])
+    for t in tasks:
+        writer.writerow([t.id, t.title, t.description or "", t.priority, t.due_date or "", "YES" if t.is_done else "NO", t.created_at])
+
+    output = si.getvalue()
+    headers = {
+        "Content-Disposition": "attachment; filename=tasks.csv",
+        "Content-Type": "text/csv",
+    }
+    return Response(output, headers=headers)
